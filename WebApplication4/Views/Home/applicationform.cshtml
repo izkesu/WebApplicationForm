@@ -8,75 +8,88 @@
 
     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
         <div class="row">
-            
-            <div class="form-group bg-success">
+
+            <div class="bg-info">
                 <label>Name:</label>
                 <input type="text" class="form-control" id="name" placeholder="Enter name">
             </div>
-            
-            <div class="form-group bg-info">
+
+            <div class=" bg-info">
                 <label>Email address:</label>
                 <input type="email" class="form-control" id="email" placeholder="Enter email">
             </div>
-            
-            <div class="form-group bg-warning">
+
+            <div class=" bg-info">
                 <label>Address:</label>
                 <input type="text" class="form-control" id="add" placeholder="Enter address">
             </div>
-            
-            <div class="form-group bg-danger">
+
+            <div class=" bg-info">
                 <label>State:</label>
                 <input type="text" class="form-control" id="state" placeholder="Enter state">
             </div>
-            
-            <div class="form-group bg-success">
+
+            <div class=" bg-info">
                 <label>City:</label>
                 <input type="text" class="form-control" id="city" placeholder="Enter city">
             </div>
-
-            <div class="form-group">
-                <input type="submit" class="btn btn-info btn-lg" value="Save" onclick="fn_save();" />
+            @*commit*@
+            <div class="btn-group">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info btn-lg" value="Save" onclick="fn_save();" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info btn-lg" value="Details" onclick="fn_save();" />
+                </div>
             </div>
         </div>
     </div>
 
 
 
+    
+    <table class="table">
+        
+        <thead>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Address</th>
-            <th scope="col">State</th>
-            <th scope="col">City</th>
-            <th scope="col">Action</th>
-            <th scope="col">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var lst in ViewBag.emp)
-        {
+
             <tr>
-                <th scope="row">@lst.name</th>
-                <td>@lst.address</td>
-                <td>@lst.state</td>
-                <td>@lst.city</td>
-                <td>
 
-                    <input type="submit" value="Edit" onclick="edit('@lst.id')" />
-                </td>
-                <td>
-                    <input type="button" value="Delete" onclick="deleteEmployee('@lst.id')" />
-                </td>
+
+                <th  class="bg-success"scope="col">Name</th>
+                <th  class="bg-success"scope="col">Address</th>
+                <th class="bg-success"scope="col">State</th>
+                <th class="bg-success"scope="col">City</th>
+                <th class="bg-success"scope="col">Action</th>
+                <th class="bg-success"scope="col">Action</th>
 
             </tr>
-        }
+
+        </thead>
+        
+        <tbody>
+            @foreach (var lst in ViewBag.emp)
+            {
+                <tr>
+                    <th scope="row">@lst.name</th>
+                    <td>@lst.address</td>
+                    <td>@lst.state</td>
+                    <td>@lst.city</td>
+                    <td>
+
+                        <input type="submit" value="Edit" class="btn btn-info btn-lg" onclick="edit('@lst.id')" />
+                    </td>
+                    <td>
+                        <input type="button" value="Delete" class="btn btn-info btn-lg" onclick="deleteEmployee('@lst.id')" />
+                    </td>
+
+                </tr>
+            }
 
 
 
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
 
 
