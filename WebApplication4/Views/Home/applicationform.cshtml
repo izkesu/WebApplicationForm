@@ -1,0 +1,172 @@
+﻿
+@{
+    ViewBag.Title = "applicationform";
+}
+<div class="form-group text-center">
+    <h2>Application  form</h2>
+</div>
+
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+        <div class="row">
+            
+            <div class="form-group bg-success">
+                <label>Name:</label>
+                <input type="text" class="form-control" id="name">
+            </div>
+            
+            <div class="form-group bg-info">
+                <label>Email address:</label>
+                <input type="email" class="form-control" id="email">
+            </div>
+            
+            <div class="form-group bg-warning">
+                <label>Address:</label>
+                <input type="text" class="form-control" id="add">
+            </div>
+            
+            <div class="form-group bg-danger">
+                <label>State:</label>
+                <input type="text" class="form-control" id="state">
+            </div>
+            
+            <div class="form-group bg-success">
+                <label>City:</label>
+                <input type="text" class="form-control" id="city">
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" onclick="fn_save();" />
+            </div>
+        </div>
+    </div>
+
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">State</th>
+            <th scope="col">City</th>
+            <th scope="col">Action</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lst in ViewBag.emp)
+        {
+            <tr>
+                <th scope="row">@lst.name</th>
+                <td>@lst.address</td>
+                <td>@lst.state</td>
+                <td>@lst.city</td>
+                <td>
+
+                    <input type="submit" value="Edit" onclick="edit('@lst.id')" />
+                </td>
+                <td>
+                    <input type="button" value="Delete" onclick="deleteEmployee('@lst.id')" />
+                </td>
+
+            </tr>
+        }
+
+
+
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+
+    function fn_save() {
+        var name = $("#name").val();
+
+        if (name == "") {
+            alert("field can not be empty");
+            $("#name").focus()
+            return false;
+        }
+
+        var email = $("#email").val();
+        var address = $("#add").val();
+        var state = $("#state").val();
+        var city = $("#city").val();
+
+        $.ajax({
+
+            url: '/Home/Applicationform?name=' + name + '&email=' + email + '&address=' + address + '&state=' + state + '&city=' + city,
+            method: 'POST',
+            success: function (data) {
+
+                $("#name").val("");
+                $("#email").val("");
+                $("#add").val("");
+                $("#state").val("");
+                $("#city").val("");
+
+                window.location.reload();
+
+
+            }
+        });
+
+    }
+
+    function edit(evnt) {
+        $.ajax({
+
+            url: '/Home/fetch?id=' + evnt,
+            type: 'POST',
+            success: function (data) {
+                console.log(data);
+                $("#name").val(data.name);
+                $("#email").val(data.email);
+                $("#add").val(data.address);
+                $("#state").val(data.state);
+                $("#city").val(data.city);
+
+
+            }
+        });
+
+
+
+
+    }
+    function deleteEmployee(id) {
+        if (confirm("Are you sure you want to delete this employees details?")) {
+            $.ajax({
+                url: '/Home/DeleteEmployee?id=' + id,
+                type: 'POST',
+                success: function (data) {
+                    // Assuming the server returns a success message or status
+                    if (data.success) {
+                        alert("Employees details deleted successfully .");
+                        // Optionally, you can reload the page to reflect the changes
+                        window.location.reload();
+                    } else {
+                        alert("Failed to delete employees details.");
+                    }
+                },
+                error: function () {
+                    alert("An error occurred while trying to delete the employees details.");
+                }
+            });
+        }
+    }
+
+
+
+</script>
+
