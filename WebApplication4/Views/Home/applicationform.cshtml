@@ -3,6 +3,10 @@
     ViewBag.Title = "applicationform";
 }
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <div class="form-group text-center">
     <h2><u><strong>Application form</strong></u></h2>
 </div>
@@ -40,7 +44,7 @@
                 <input type="submit" class="btn btn-info btn-lg" value="Save" onclick="fn_save();" />
             </div>
             <div class="form-group" style="margin : 10px;">
-                <input type="submit" class="btn btn-info btn-lg" value="Details" onclick="fn_save();" />
+                <input type="submit" class="btn btn-info btn-lg" value="Details" id="button1" />
             </div>
         </div>
 
@@ -48,7 +52,7 @@
 
 
 
-        <table class="table">
+        <table class="table table-striped">
 
             <thead>
 
@@ -98,9 +102,17 @@
 
 
 
-
         <script src="~/Scripts/jquery-3.4.1.min.js"></script>
         <script type="text/javascript">
+
+            $(document).ready(function () {
+                $("#button1").click(function () {
+                    $(this).button("loading").delay(500).queue(function () {
+                        $(this).button("reset");
+                        $(this).dequeue();
+                    });
+                });
+            });
 
             function fn_save() {
                 var name = $("#name").val();
