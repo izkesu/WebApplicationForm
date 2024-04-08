@@ -1,6 +1,10 @@
 ﻿body {
+    margin: 0;
     padding-top: 50px;
-    padding-bottom: 20px;
+    background-image: url('https://img.freepik.com/free-photo/top-view-desk-concept-with-copy-space_23-2148236855.jpg?size=626&ext=jpg&ga=GA1.1.87170709.1707264000&semt=ais');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -22,3 +26,4 @@ select,
 textarea {
     max-width: 280px;
 }
+
