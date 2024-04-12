@@ -15,9 +15,28 @@
           <Property Name="email" Type="varchar" MaxLength="50" />
           <Property Name="state" Type="varchar" MaxLength="50" />
           <Property Name="city" Type="varchar" MaxLength="50" />
+          <Property Name="image" Type="text" />
+        </EntityType>
+        <EntityType Name="tb_admin">
+          <Key>
+            <PropertyRef Name="ad_id" />
+          </Key>
+          <Property Name="ad_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ad_username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ad_password" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_admin">
+          <Key>
+            <PropertyRef Name="ad_id" />
+          </Key>
+          <Property Name="ad_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ad_username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ad_password" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityContainer Name="demoModelStoreContainer">
           <EntitySet Name="Table_1" EntityType="Self.Table_1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_admin" EntityType="Self.tb_admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_admin" EntityType="Self.tbl_admin" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -25,6 +44,8 @@
       <Schema Namespace="demoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="demoEntities" annotation:LazyLoadingEnabled="true" >
           <EntitySet Name="Table_1" EntityType="demoModel.Table_1" />
+          <EntitySet Name="tb_admin" EntityType="demoModel.tb_admin" />
+          <EntitySet Name="tbl_admin" EntityType="demoModel.tbl_admin" />
         </EntityContainer>
         <EntityType Name="Table_1">
           <Key>
@@ -36,6 +57,23 @@
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="state" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tb_admin">
+          <Key>
+            <PropertyRef Name="ad_id" />
+          </Key>
+          <Property Name="ad_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ad_username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ad_password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbl_admin">
+          <Key>
+            <PropertyRef Name="ad_id" />
+          </Key>
+          <Property Name="ad_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ad_username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ad_password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -46,12 +84,31 @@
           <EntitySetMapping Name="Table_1">
             <EntityTypeMapping TypeName="demoModel.Table_1">
               <MappingFragment StoreEntitySet="Table_1">
+                <ScalarProperty Name="image" ColumnName="image" />
                 <ScalarProperty Name="city" ColumnName="city" />
                 <ScalarProperty Name="state" ColumnName="state" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="address" ColumnName="address" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_admin">
+            <EntityTypeMapping TypeName="demoModel.tb_admin">
+              <MappingFragment StoreEntitySet="tb_admin">
+                <ScalarProperty Name="ad_password" ColumnName="ad_password" />
+                <ScalarProperty Name="ad_username" ColumnName="ad_username" />
+                <ScalarProperty Name="ad_id" ColumnName="ad_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_admin">
+            <EntityTypeMapping TypeName="demoModel.tbl_admin">
+              <MappingFragment StoreEntitySet="tbl_admin">
+                <ScalarProperty Name="ad_password" ColumnName="ad_password" />
+                <ScalarProperty Name="ad_username" ColumnName="ad_username" />
+                <ScalarProperty Name="ad_id" ColumnName="ad_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

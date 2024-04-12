@@ -26,5 +26,7 @@ namespace WebApplication4
         }
     
         public virtual DbSet<Table_1> Table_1 { get; set; }
+        public virtual DbSet<tb_admin> tb_admin { get; set; }
+        public virtual DbSet<tbl_admin> tbl_admin { get; set; }
     }
 }

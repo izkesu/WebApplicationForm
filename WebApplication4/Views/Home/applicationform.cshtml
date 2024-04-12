@@ -10,7 +10,7 @@
 <div class="form-group text-center">
     <h2><u><strong>Application form</strong></u></h2>
 </div>
-
+s
 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
     <div class="row">
 
@@ -38,62 +38,35 @@
             <label>City:</label>
             <input type="text" class="form-control" id="city" placeholder="Enter city">
         </div>
-        @*commit*@
-        <div style="display: flex; justify-content: flex-start;">
-            <div class="form-group" style="padding : 10px;">
-                <input type="submit" class="btn btn-info btn-lg" value="Save" onclick="fn_save();" />
-            </div>
-            <div class="form-group" style="margin : 10px;">
-                <input type="submit" class="btn btn-info btn-lg" value="Details" id="button1" />
+
+        <div style="padding-top:10px">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                    <p class="contact"><label for="name"> Upload Image:</label></p>
+                    <input type="file" name="imgfile" id="FileUpload1" class="form-control" required="required" />
+
+                </div>
+
+
             </div>
         </div>
+            
+
+
+            @*commit*@
+            <div style="display: flex; justify-content: flex-start;">
+                <div class="form-group" style="padding : 10px;">
+                    <input type="submit" class="btn btn-info btn-lg" value="Save" onclick="fn_save();" />
+                </div>
+
+            </div>
+        </div>
+</div>
 
 
 
 
-
-        <table class="table table-striped">
-
-            <thead>
-
-
-                <tr>
-
-
-                    <th class="bg-success" scope="col">Name</th>
-                    <th class="bg-success" scope="col">Address</th>
-                    <th class="bg-success" scope="col">State</th>
-                    <th class="bg-success" scope="col">City</th>
-                    <th class="bg-success" scope="col">Action</th>
-                    <th class="bg-success" scope="col">Action</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-                @foreach (var lst in ViewBag.emp)
-                {
-                    <tr>
-                        <th scope="row">@lst.name</th>
-                        <td>@lst.address</td>
-                        <td>@lst.state</td>
-                        <td>@lst.city</td>
-                        <td>
-
-                            <input type="submit" value="Edit" class="btn btn-info btn-lg" onclick="edit('@lst.id')" />
-                        </td>
-                        <td>
-                            <input type="button" value="Delete" class="btn btn-info btn-lg" onclick="deleteEmployee('@lst.id')" />
-                        </td>
-
-                    </tr>
-                }
-
-
-
-            </tbody>
-        </table>
 
 
 
@@ -105,16 +78,10 @@
         <script src="~/Scripts/jquery-3.4.1.min.js"></script>
         <script type="text/javascript">
 
-            $(document).ready(function () {
-                $("#button1").click(function () {
-                    $(this).button("loading").delay(500).queue(function () {
-                        $(this).button("reset");
-                        $(this).dequeue();
-                    });
-                });
-            });
+
 
             function fn_save() {
+           
                 var name = $("#name").val();
 
                 if (name == "") {
@@ -128,10 +95,24 @@
                 var state = $("#state").val();
                 var city = $("#city").val();
 
+                var fileUpload = $("#FileUpload1").get(0);
+                var files = fileUpload.files;
+
+                // Create FormData object  
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object  
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
                 $.ajax({
 
                     url: '/Home/Applicationform?name=' + name + '&email=' + email + '&address=' + address + '&state=' + state + '&city=' + city,
-                    method: 'POST',
+                    type: 'POST',
+                    contentType: false, // Not to set any content header  
+                    processData: false, // Not to process data  
+                    data: fileData,
                     success: function (data) {
 
                         $("#name").val("");
@@ -148,48 +129,6 @@
 
             }
 
-            function edit(evnt) {
-                $.ajax({
-
-                    url: '/Home/fetch?id=' + evnt,
-                    type: 'POST',
-                    success: function (data) {
-                        console.log(data);
-                        $("#name").val(data.name);
-                        $("#email").val(data.email);
-                        $("#add").val(data.address);
-                        $("#state").val(data.state);
-                        $("#city").val(data.city);
-
-
-                    }
-                });
-
-
-
-
-            }
-            function deleteEmployee(id) {
-                if (confirm("Are you sure you want to delete this employees details?")) {
-                    $.ajax({
-                        url: '/Home/DeleteEmployee?id=' + id,
-                        type: 'POST',
-                        success: function (data) {
-                            // Assuming the server returns a success message or status
-                            if (data.success) {
-                                alert("Employees details deleted successfully .");
-                                // Optionally, you can reload the page to reflect the changes
-                                window.location.reload();
-                            } else {
-                                alert("Failed to delete employees details.");
-                            }
-                        },
-                        error: function () {
-                            alert("An error occurred while trying to delete the employees details.");
-                        }
-                    });
-                }
-            }
 
 
 

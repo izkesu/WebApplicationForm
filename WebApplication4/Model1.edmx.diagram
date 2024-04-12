@@ -6,6 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="bf35f654ade946f4821f4cf47794cb78" Name="Diagram1" >
         <EntityTypeShape EntityType="demoModel.Table_1" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="demoModel.tb_admin" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="demoModel.tbl_admin" Width="1.5" PointX="3.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -1,8 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+
+using System.Data.Entity;
+using WebApplication4.Models;
+using System.Net;
+using System.IO;
+using System.Web;
 
 namespace WebApplication4.Controllers
 {
@@ -16,6 +20,7 @@ namespace WebApplication4.Controllers
             return View();
         }
 
+        //========================================================================================================
         public ActionResult applicationform()
         {
             var data = _contxt.Table_1.ToList();
@@ -24,39 +29,77 @@ namespace WebApplication4.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Applicationform(String name, String email, String address, String state, String city)
-        {
+        //========================================================================================================
 
-            var Yn = _contxt.Table_1.Any(x => x.email == email);
-            if (Yn == false)
+        [HttpPost]
+
+        public ActionResult ApplicationForm(String name, String email, String address, String state, String city)
+        {
+            string fileName = "";
+            if (Request.Files.Count > 0)
             {
-                Table_1 obj = new Table_1();
-                obj.id = Guid.NewGuid();
-                obj.name = name;
-                obj.email = email;
-                obj.address = address;
-                obj.state = state;
-                obj.city = city;
+                HttpFileCollectionBase files = Request.Files;
+                for (int i = 0; i < files.Count; i++)
+                {
+                    HttpPostedFileBase file = files[i];
+                    if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                    {
+                        string[] testFiles = file.FileName.Split(new char[] { '\\' });
+                        fileName = testFiles[testFiles.Length - 1];
+                    }
+                    else
+                    {
+                        fileName = file.FileName;
+                    }
+
+                    // Save the file to a specific directory
+                    string filePath = Path.Combine(Server.MapPath("~/Content/pictures"), fileName);
+                    file.SaveAs(filePath);
+                }
+            }
+
+            // Check if the email already exists in the database
+            var exists = _contxt.Table_1.Any(x => x.email == email);
+            if (!exists)
+            {
+                Table_1 obj = new Table_1
+                {
+                    id = Guid.NewGuid(),
+                    name = name,
+                    email = email,
+                    address = address,
+                    state = state,
+                    city = city,
+                    image = fileName // Save the file name, not the path
+                };
 
                 _contxt.Table_1.Add(obj);
-                _contxt.SaveChanges();
             }
             else
             {
-                var existEmp = _contxt.Table_1.Where(x => x.email == email).FirstOrDefault();
-                existEmp.name = name;
-                existEmp.email = email;
-                existEmp.address = address;
-                existEmp.state = state;
-                existEmp.city = city;
-                _contxt.SaveChanges();
-
+                var existingRecord = _contxt.Table_1.FirstOrDefault(x => x.email == email);
+                if (existingRecord != null)
+                {
+                    existingRecord.name = name;
+                    existingRecord.email = email;
+                    existingRecord.address = address;
+                    existingRecord.state = state;
+                    existingRecord.city = city;
+                    existingRecord.image = fileName; // Update the file name
+                }
             }
 
-//commit
+            _contxt.SaveChanges();
             return Json("");
         }
+
+        //hi
+
+        //=============================================================================================
+
+
+
+
 
         public ActionResult fetch(Guid? id)
         {
@@ -65,11 +108,39 @@ namespace WebApplication4.Controllers
             return Json(employeeData);
         }
 
-//commit
 
 
 
-        [HttpPost]
+
+
+
+
+
+    
+
+       //=========================================================================================================
+        public ActionResult SavedDetails()
+        {
+          
+           var data = _contxt.Table_1.ToList();
+
+
+            ViewBag.emp = data;
+            return View();
+        }
+
+        //============================================================================================================
+
+
+
+
+     
+
+
+
+
+
+    [HttpPost]
 
         public ActionResult DeleteEmployee(Guid id)
         {
@@ -88,8 +159,90 @@ namespace WebApplication4.Controllers
         }
 
 
+
+
+
+
+
+       
+
+
+
+
+        [HttpPost]
+        public ActionResult UpdateEmployee(Employee employee)
+        {
+            if (ModelState.IsValid)
+            {
+
+                // Assuming you have a DbSet<Employee> in your DbContext
+                //var existingEmployee = _contxt.Employees;
+                var existingEmployee = _contxt.Table_1.FirstOrDefault(x => x.id == employee.id);
+
+                if (existingEmployee != null)
+                {
+                    existingEmployee.name = employee.Name;
+                    existingEmployee.email = employee.Email;
+                    existingEmployee.address = employee.Address;
+                    existingEmployee.state = employee.State;
+                    existingEmployee.city = employee.City;
+
+                    _contxt.Entry(existingEmployee).State = EntityState.Modified;
+                    _contxt.SaveChanges();
+
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Employee not found." });
+                }
+            }
+            else
+            {
+                return Json(new { success = false, message = "Invalid data." });
+            }
+        }
+
+        //public string Uploadimgfile(HttpPostedFileBase File)
+        //{
+
+
+        //    Random r = new Random();
+        //    string path = "-1";
+        //    int random = r.Next();
+        //    if (File != null && File.ContentLength > 0)
+        //    {
+        //        string extension = Path.GetExtension(File.FileName);
+        //        if (extension.ToLower().Equals(".jpg") || extension.ToLower().Equals(".jpeg") || extension.ToLower().Equals(".png"))
+        //        {
+        //            try
+        //            {
+
+        //                path = Path.Combine(Server.MapPath("~/Content/pictures"), random + Path.GetFileName(File.FileName)); File.SaveAs(path);
+        //                path = "/Content/pictures/" + random + Path.GetFileName(File.FileName);
+        //                ViewBag.Message = "File uploaded successfully";
+        //            }
+        //            catch (Exception)
+        //            {
+        //                path = "-1";
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Response.Write("<script>alert('only jpg,jpeg or png formats are acceptable....');</script>");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Response.Write("<script>alert('Please select a file');</script>");
+        //        path = "-1";
+        //    }
+        //    return path;
+
+        //}
     }
 
 }
 
-//git
+
+

@@ -12,14 +12,10 @@ namespace WebApplication4
     using System;
     using System.Collections.Generic;
     
-    public partial class Table_1
+    public partial class tb_admin
     {
-        public System.Guid id { get; set; }
-        public string name { get; set; }
-        public string address { get; set; }
-        public string email { get; set; }
-        public string state { get; set; }
-        public string city { get; set; }
-        public string image { get; set; }
+        public int ad_id { get; set; }
+        public string ad_username { get; set; }
+        public string ad_password { get; set; }
     }
 }
