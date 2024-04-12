@@ -58,7 +58,7 @@ namespace WebApplication4.Controllers
                 }
             }
 
-            // Check if the email already exists in the database
+           
             var exists = _contxt.Table_1.Any(x => x.email == email);
             if (!exists)
             {
@@ -95,7 +95,7 @@ namespace WebApplication4.Controllers
 
         //hi
 
-        //=============================================================================================
+        //==============================================================================================
 
 
 
@@ -160,11 +160,25 @@ namespace WebApplication4.Controllers
 
 
 
+        public ActionResult DisplayImage(Guid id)
+        {
+            var employee = _contxt.Table_1.FirstOrDefault(x => x.id == id);
+            if (employee != null && !string.IsNullOrEmpty(employee.image))
+            {
+                var imagePath = Path.Combine(Server.MapPath("~/Content/pictures"), employee.image);
+                var imageBytes = System.IO.File.ReadAllBytes(imagePath);
+                return File(imageBytes, "image/jpeg"); 
+            }
+            else
+            {
+                return HttpNotFound();
+            }
+        }
 
 
 
 
-       
+
 
 
 
@@ -175,8 +189,7 @@ namespace WebApplication4.Controllers
             if (ModelState.IsValid)
             {
 
-                // Assuming you have a DbSet<Employee> in your DbContext
-                //var existingEmployee = _contxt.Employees;
+                
                 var existingEmployee = _contxt.Table_1.FirstOrDefault(x => x.id == employee.id);
 
                 if (existingEmployee != null)
@@ -203,43 +216,7 @@ namespace WebApplication4.Controllers
             }
         }
 
-        //public string Uploadimgfile(HttpPostedFileBase File)
-        //{
-
-
-        //    Random r = new Random();
-        //    string path = "-1";
-        //    int random = r.Next();
-        //    if (File != null && File.ContentLength > 0)
-        //    {
-        //        string extension = Path.GetExtension(File.FileName);
-        //        if (extension.ToLower().Equals(".jpg") || extension.ToLower().Equals(".jpeg") || extension.ToLower().Equals(".png"))
-        //        {
-        //            try
-        //            {
-
-        //                path = Path.Combine(Server.MapPath("~/Content/pictures"), random + Path.GetFileName(File.FileName)); File.SaveAs(path);
-        //                path = "/Content/pictures/" + random + Path.GetFileName(File.FileName);
-        //                ViewBag.Message = "File uploaded successfully";
-        //            }
-        //            catch (Exception)
-        //            {
-        //                path = "-1";
-        //            }
-        //        }
-        //        else
-        //        {
-        //            Response.Write("<script>alert('only jpg,jpeg or png formats are acceptable....');</script>");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Response.Write("<script>alert('Please select a file');</script>");
-        //        path = "-1";
-        //    }
-        //    return path;
-
-        //}
+       
     }
 
 }

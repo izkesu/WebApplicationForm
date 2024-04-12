@@ -6,7 +6,10 @@
 <h2 style="padding: 10px;">
     <span style=" border-radius: 10px; text-decoration: underline;">Saved Details</span>
 </h2>
+<head>
 
+    <link href="@Url.Content("/content/newstyle1.css")" rel="stylesheet"/>
+</head>
 
 
 <table class="table table-striped">
@@ -34,39 +37,59 @@
     <tbody>
         @foreach (var lst in ViewBag.emp)
         {
-        <tr>
-            <th scope="row">@lst.name</th>
-            <td>@lst.email</td>
-            <td>@lst.address</td>
-            <td>@lst.state</td>
-            <td>@lst.city</td>
-            
-
-
-
-            <td>
-                <input type="submit" value="Edit" class="btn btn-info btn-lg" onclick="edit('@lst.id')" />
-            </td>
-
-            <td>
-                <input type="button" value="Delete" class="btn btn-info btn-lg" onclick="deleteEmployee('@lst.id')" />
-            </td>
-
-            <td>
-                <input type="button" value="View Image" class="btn btn-info btn-lg"  />
-            </td>
-        </tr>
-
-    }
-
-
-
-        </tbody>
-    </table>
+            <tr>
+                <th scope="row">@lst.name</th>
+                <td>@lst.email</td>
+                <td>@lst.address</td>
+                <td>@lst.state</td>
+                <td>@lst.city</td>
 
 
 
 
+                <td>
+                    <input type="submit" value="Edit" class="btn btn-info btn-lg" onclick="edit('@lst.id')" />
+                </td>
+
+                <td>
+                    <input type="button" value="Delete" class="btn btn-info btn-lg" onclick="deleteEmployee('@lst.id')" />
+                </td>
+
+                <td>
+                    <input type="button" value="View Image" class="btn btn-info btn-lg" onclick="displayimage('@lst.id')" />
+                </td>
+            </tr>
+
+        }
+
+
+
+    </tbody>
+</table>
+
+
+
+
+
+
+<div id="imageModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Employee Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="employeeImage" src="" alt="Employee Image" class="img-fluid" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -134,7 +157,18 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
 
-    
+
+
+
+    function displayimage(id) {
+        var imageUrl = '/Home/DisplayImage?id=' + id;
+        $('#employeeImage').attr('src', imageUrl);
+        $('#imageModal').modal('show');
+    }
+
+
+
+
 
 
     function submitEditForm() {
@@ -172,18 +206,18 @@
                 $("#editAddress").val(data.address);
                 $("#editState").val(data.state);
                 $("#editCity").val(data.city);
-                $("#editId").val(data.id); 
-                $('#editModal').modal('show'); 
+                $("#editId").val(data.id);
+                $('#editModal').modal('show');
             }
         });
     }
 
 
 
-   
 
- 
-  
+
+
+
 
 
 
@@ -193,10 +227,10 @@
                 url: '/Home/DeleteEmployee?id=' + id,
                 type: 'POST',
                 success: function (data) {
-                    
+
                     if (data.success) {
                         alert("Employees details deleted successfully .");
-                        
+
                         window.location.reload();
                     } else {
                         alert("Failed to delete employees details.");
@@ -210,7 +244,7 @@
     }
 
 
-  
+
 
 
 </script>
